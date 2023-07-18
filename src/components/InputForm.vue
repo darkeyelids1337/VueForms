@@ -34,7 +34,7 @@ export default {
   methods:{
     submitForm(){
       if(isNaN(+this.bankBook)){
-        console.log('Not a number!', +this.bankBook);
+        this.isError = true;
       }
       const users = this.$store.getters.getUsers.filter((user) => {
         return user['bankBook'] === +this.bankBook;

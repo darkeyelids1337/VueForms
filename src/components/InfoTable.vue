@@ -50,7 +50,6 @@ export default{
         if(this.$store.getters.getData[0]){
             this.userInfo = this.$store.getters.getData[0];
         }
-        console.log(this.$store.getters.getData[0])
     },
     computed:{
         toDisable(){
@@ -63,10 +62,14 @@ export default{
             return Number(number) === number && number % 1 !== 0;
         },
         submitForm(){
-            if(this.userInfo.electricity > this.formElectricity || this.userInfo.water > this.formWater || this.userInfo.warm > this.formWarm){
+            console.log(this.isFloat(+this.formElectricity))
+            if(this.userInfo.electricity > +this.formElectricity || this.userInfo.water > +this.formWater || this.userInfo.warm > +this.formWarm){
                 return this.isError = true;
             }
-            else if(this.isFloat(+this.formElectricity) && this.isFloat(+this.formWater) && this.isFloat(+this.formWarm)){
+            // else if(this.isFloat(+this.formElectricity) && this.isFloat(+this.formWater) && this.isFloat(+this.formWarm)){
+            //     this.$router.push('success');
+            // }
+            else if(+this.formElectricity === Number(this.formElectricity) && +this.formWater === Number(this.formWater) && +this.formWarm === Number(this.formWarm)){
                 this.$router.push('success');
             }
             else this.isError = true;

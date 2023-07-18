@@ -1,4 +1,3 @@
-//import Vue from 'vue'
 import Vuex from 'vuex'
 interface UsersInterface{
    users: Array<{name:string; bankBook:number;}>,
@@ -6,11 +5,6 @@ interface UsersInterface{
    data: Array<{bankBook:number; name:string; electricity: number; water: number; warm: number}>
 }
 export default new Vuex.Store({
-//   state: (): UsersInterface => ({
-//     users: Array<UsersInterface>,
-//     foundUser: Array<UsersInterface>,
-
-//   })
   state: {
     users:[
         {

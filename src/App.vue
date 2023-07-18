@@ -1,16 +1,27 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <div>
+        <!-- <InfoTable v-if="this.$store.getters.getFoundUser.length > 0"></InfoTable>
+        <InputForm v-else></InputForm>
+        <ErrorPage v-show="false"></ErrorPage> -->
+        <RouterView></RouterView>
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+import { RouterView } from 'vue-router';
+// import InfoTable from './components/InfoTable.vue';
+// import InputForm from './components/InputForm.vue';
+// import ErrorPage from './components/ErrorPage.vue';
+export default{
+  name:'App',
+  components:{
+    // InfoTable,
+    // InputForm,
+    // ErrorPage,
+    RouterView
+  },
 }
 </script>
 

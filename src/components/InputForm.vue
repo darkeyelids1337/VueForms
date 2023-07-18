@@ -3,7 +3,7 @@
     <div v-if="!isError" class="form-div">
       <h2>Введите номер лицевого счета:</h2>
       <label>
-        <InputComponent @changeModel="(data) => this.bankBook = data"></InputComponent>
+        <InputComponent @changeModel="(data) => this.bankBook = data" @paste="onPaste($event)"></InputComponent>
       </label>
       <div>
       <button @click.prevent = "submitForm" type="submit">Проверить</button>
@@ -58,6 +58,9 @@ export default {
         return true;
       }
     },
+    onPaste(evt){
+      this.bankBook = evt.clipboardData.getData('text');
+    }
   },
   created(){
   },

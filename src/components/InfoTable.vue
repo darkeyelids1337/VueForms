@@ -3,24 +3,6 @@
         <h1>InfoTable</h1>
         <h2>Добро пожаловать, {{ userInfo.name  }}</h2>
         <form @submit.prevent="submitForm">
-            <!-- <table>
-                <tr>
-                    <th>Электричество</th>
-                    <th>Вода</th>
-                    <th>Тепло</th>
-                </tr>
-                <tr>
-                    <th>
-                        {{ userInfo.electricity }}
-                    </th>
-                    <th>
-                        {{ userInfo.water }}
-                    </th>
-                    <th>
-                        {{ userInfo.warm }}
-                    </th>
-                </tr>
-            </table> -->
             <div class="table-class">
               
                 <div class="table-column">
@@ -52,35 +34,17 @@
                 <div class="table-column">
                     <p>Ввод значений</p>
                     <div>
-                        <InputComponent @changeModel="(data) => this.formElectricity = data"></InputComponent>
+                        <InputComponent @changeModel="(data) => this.formElectricity = data" :before="5" :after="3"></InputComponent>
                     </div>  
                     <div>
-                        <InputComponent @changeModel="(data) => this.formWater = data"></InputComponent>
+                        <InputComponent @changeModel="(data) => this.formWater = data" :before="5" :after="3"></InputComponent>
                     </div>
                     <div>  
-                        <InputComponent @changeModel="(data) => this.formWarm = data"></InputComponent>
+                        <InputComponent @changeModel="(data) => this.formWarm = data" :before="5" :after="3"></InputComponent>
                     </div>
                     
                 </div>
             </div>
-            <!-- <div>
-                <label>
-                Электричество: {{ this.userInfo.electricity }}
-                <InputComponent @changeModel="(data) => this.formElectricity = data"></InputComponent>
-            </label>
-            </div>
-            <div>
-                <label style="margin-right: 69px;">
-                Вода: {{ this.userInfo.water }}
-                <InputComponent @changeModel="(data) => this.formWater = data"></InputComponent>
-            </label>
-            </div>
-            <div>
-                <label style="margin-right: 67px;">
-                Тепло: {{ this.userInfo.warm }}
-                <InputComponent @changeModel="(data) => this.formWarm = data"></InputComponent>
-            </label>
-            </div> -->
            <button type="submit" :disabled="toDisable">Отправить</button>
         </form>
     </div>
@@ -126,22 +90,17 @@ export default{
             return Number(number) === number && number % 1 !== 0;
         },
         submitForm(){
+            console.log(+this.formElectricity);
+            console.log(+this.formWater);
+            console.log(+this.formWarm);
             if(this.userInfo.electricity > +this.formElectricity || this.userInfo.water > +this.formWater || this.userInfo.warm > +this.formWarm){
                 return this.isError = true;
             }
             else if(+this.formElectricity === Number(this.formElectricity) && +this.formWater === Number(this.formWater) && +this.formWarm === Number(this.formWarm)){
+                
                 this.$router.push('success');
             }
             else this.isError = true;
-        },
-        isNumberInput(evt){
-            let charCode = (evt.which) ? evt.which : evt.keyCode;
-            console.log(charCode)
-            if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-                evt.preventDefault();
-            } else {
-                return true;
-            }
         },
     }
 }
@@ -149,6 +108,7 @@ export default{
 
 <style scoped>
 .table-class{
+    margin-top: 50px;
     display: flex;
     gap: 20px;
 }
@@ -167,15 +127,18 @@ p{
     margin: 0;
 }
 .values{
+    font-weight: 700;
     background-color: rgba(129, 127, 127, 0.185);
 }
 form{
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     gap:20px;
-    width: 100%;
+    max-width: 50%;
+    border: 1px solid #1C6EA4;
     
 }
 h1{

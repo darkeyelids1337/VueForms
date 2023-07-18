@@ -2,7 +2,8 @@ import Vuex from 'vuex'
 interface UsersInterface{
    users: Array<{name:string; bankBook:number;}>,
    foundUser: Array<{name:string; bankBook:number;}>,
-   data: Array<{bankBook:number; name:string; electricity: number; water: number; warm: number}>
+   data: Array<{bankBook:number; name:string; electricity: number; water: number; warm: number}>,
+   bankBook: number
 }
 export default new Vuex.Store({
   state: {
@@ -45,7 +46,8 @@ export default new Vuex.Store({
             water: 16.55,
             warm: 13.33
         },
-    ]
+    ],
+    bankBook: 0,
   } as UsersInterface,
   getters:{
     getUsers(state){
@@ -57,11 +59,17 @@ export default new Vuex.Store({
     getData(state){
         const bankBook = state.foundUser[0]['bankBook'];
         return JSON.parse(JSON.stringify(state.data.filter((user) => user['bankBook'] === bankBook)));
+    },
+    getBankBook(state){
+        return state.bankBook;
     }
   },
   mutations: {
     setUser (state, payload) {
       state.foundUser = payload;
+    },
+    setBankBook(state, payload){
+        state.bankBook = payload;
     }
   }
 })

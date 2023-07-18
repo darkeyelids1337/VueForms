@@ -3,7 +3,7 @@
     <div v-if="!isError" class="form-div">
       <h2>Введите номер лицевого счета:</h2>
       <label>
-        <input type="text" v-model="bankBook">
+        <InputComponent @changeModel="(data) => this.bankBook = data"></InputComponent>
       </label>
       <div>
       <button @click.prevent = "submitForm" type="submit">Проверить</button>
@@ -19,12 +19,16 @@
 </template>
 
 <script>
+import InputComponent from './InputComponent.vue';
 export default {
   name: 'InputForm',
+  components:{
+    InputComponent,
+  },
   data(){
     return {
-      bankBook: '',
       isError: false,
+      bankBook: '',
     }
   },
   computed: {
@@ -33,6 +37,7 @@ export default {
 
   methods:{
     submitForm(){
+      //this.bankBook = this.$store.getters.getBankBook;
       if(isNaN(+this.bankBook)){
         this.isError = true;
       }
@@ -44,7 +49,15 @@ export default {
         this.$router.push('/info-table');
       }
       else return this.isError = true;
-    }
+    },
+    isNumberInput(evt){
+      let charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
   },
   created(){
   },

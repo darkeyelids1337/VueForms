@@ -25,13 +25,15 @@ export default{
     isNumberInput(evt, text){
             let charCode = evt.keyCode;
             const splited = this.value.split('.') || text;
+            console.log(splited);
             const len = splited.length;
-            charCode === 46 ? this.period++ : this.period;
+            len === 1 ? this.period = 1 : this.period = 2; 
+            //charCode === 46 ? this.period++ : this.period;
             if(len === 1 && splited[0].length > this.before - 1 && charCode !== 46){
                 evt.preventDefault();
                 return false;
             }
-            else if(len === 2 && splited[1].length > this.after - 1){
+            else if((len === 2 && splited[1].length > this.after - 1 ) || (len === 1 && splited[0].length > this.before && charCode !== 46)){
                 evt.preventDefault();
                 return false;
             }

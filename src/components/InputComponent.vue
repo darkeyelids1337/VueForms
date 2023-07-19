@@ -52,10 +52,23 @@ export default{
         numberReg(evt){
             const regex = new RegExp('^(\\d{0,' + this.before + '}|\\d{' + this.before + '}\\.\\d{0,' + this.after + '})$');
             const currentValue = evt.target.value;
-            
-            if (!currentValue.match(regex)){
-                evt.preventDefault();
-                evt.target.value = this.lastValue;
+            //console.log(evt.inputType === "deleteContentBackward")
+            if(evt.inputType === "deleteContentBackward"){
+                console.log(evt.target.value)
+            }
+            else if (!currentValue.match(regex)){
+                // if(evt.target.value.join('').length > 5 && !evt.target.value.includes('.')){
+                //     evt.target.value += '.';
+                // }
+                const newArr = evt.target.value.split('');
+                if(newArr.length > 5 && !evt.target.value.includes('.')){
+                    newArr.splice(5, 0, '.');
+                    evt.target.value = newArr.join('');
+                }
+                else{
+                    evt.preventDefault();
+                    evt.target.value = this.lastValue;
+                }
             }
             else{
                 this.lastValue = currentValue;
@@ -73,7 +86,6 @@ export default{
             }    
         },
     changeModel(){
-        console.log(this.value);
         this.$emit('changeModel', this.value)
     }
     },

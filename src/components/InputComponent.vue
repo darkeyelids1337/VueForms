@@ -1,5 +1,5 @@
 <template>
-    <input type="text" @input="numberReg($event)" @change="changeModel($event)" v-model="value" placeholder="тык" @paste.prevent="onPaste($event)"> 
+    <input type="text" @input="numberReg($event)" @change="changeModel($event)" v-model="value" placeholder="тык" @paste.prevent="onPaste($event)" @focusout="onFocusOut($event)"> 
 </template>
 
 <script>
@@ -12,7 +12,7 @@ export default{
         },
         after:{
             type:Number,
-            default:3
+            default:0
         }
     },
     data(){
@@ -51,21 +51,26 @@ export default{
     //     },
         numberReg(evt){
             const regex = new RegExp('^(\\d{0,' + this.before + '}|\\d{' + this.before + '}\\.\\d{0,' + this.after + '})$');
-            const currentValue = evt.target.value;
-            //console.log(evt.inputType === "deleteContentBackward")
+            let currentValue = evt.target.value;
             if(evt.inputType === "deleteContentBackward"){
-                console.log(evt.target.value)
+                const newArr = evt.target.value.split('');
+                evt.target.value = newArr.join('');
+                currentValue = newArr.join('');
+                this.lastValue = currentValue;
             }
             else if (!currentValue.match(regex)){
-                // if(evt.target.value.join('').length > 5 && !evt.target.value.includes('.')){
-                //     evt.target.value += '.';
-                // }
+                console.log(!currentValue.match(regex))
                 const newArr = evt.target.value.split('');
+                const beforeDot = evt.target.value.split('.');
                 if(newArr.length > 5 && !evt.target.value.includes('.')){
                     newArr.splice(5, 0, '.');
                     evt.target.value = newArr.join('');
                 }
+                else if(beforeDot[0].length < 5 && beforeDot[1].length <= 3){
+                    return;
+                }
                 else{
+                    console.log('im here')
                     evt.preventDefault();
                     evt.target.value = this.lastValue;
                 }
@@ -74,6 +79,13 @@ export default{
                 this.lastValue = currentValue;
             } 
         },
+        onFocusOut(evt){
+            const currentValue = evt.target.value;
+            const newArr= currentValue.split('.');
+            if(newArr[1] ===''){
+                evt.target.value = newArr.join('');
+            }
+        },
         onPaste(evt){
             const text = evt.clipboardData.getData('text');
             if(isNaN(Number(text)) || text.split('.')[0].length > this.before) {
@@ -81,7 +93,7 @@ export default{
             }
             else{
                 this.value = text;
-                this.isNumberInput(evt, this.value);
+                // this.isNumberInput(evt, this.value);
                 this.changeModel();
             }    
         },

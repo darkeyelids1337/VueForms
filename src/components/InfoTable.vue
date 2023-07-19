@@ -90,14 +90,13 @@ export default{
             return Number(number) === number && number % 1 !== 0;
         },
         submitForm(){
-            console.log(+this.formElectricity);
-            console.log(+this.formWater);
+            console.log(+this.formElectricity === Number(this.formElectricity) && +this.formWater === Number(this.formWater) && +this.formWarm === Number(this.formWarm));
+            console.log( +this.formWater === Number(this.formWater));
             console.log(+this.formWarm);
-            if(this.userInfo.electricity > +this.formElectricity || this.userInfo.water > +this.formWater || this.userInfo.warm > +this.formWarm){
+            if(this.userInfo.electricity > +this.formElectricity && this.userInfo.water > +this.formWater && this.userInfo.warm > +this.formWarm){
                 return this.isError = true;
             }
             else if(+this.formElectricity === Number(this.formElectricity) && +this.formWater === Number(this.formWater) && +this.formWarm === Number(this.formWarm)){
-                
                 this.$router.push('success');
             }
             else this.isError = true;

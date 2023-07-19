@@ -37,7 +37,6 @@ export default {
 
   methods:{
     submitForm(){
-      //this.bankBook = this.$store.getters.getBankBook;
       if(isNaN(+this.bankBook)){
         this.isError = true;
       }

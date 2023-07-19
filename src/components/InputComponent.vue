@@ -52,22 +52,38 @@ export default{
         numberReg(evt){
             const regex = new RegExp('^(\\d{0,' + this.before + '}|\\d{' + this.before + '}\\.\\d{0,' + this.after + '})$');
             let currentValue = evt.target.value;
-            if(evt.inputType === "deleteContentBackward"){
+            const keysAllowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
+            const keysAllowedNum = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+            const foundNum = evt.target.value.split('').every(r => keysAllowedNum.includes(r))
+            if(evt.inputType === "deleteContentBackward" && evt.target.value.split('').length < 5 ){
                 const newArr = evt.target.value.split('');
                 evt.target.value = newArr.join('');
                 currentValue = newArr.join('');
                 this.lastValue = currentValue;
             }
             else if (!currentValue.match(regex)){
-                console.log(!currentValue.match(regex))
-                const newArr = evt.target.value.split('');
+                const newArr = evt.target.value.split(''); 
                 const beforeDot = evt.target.value.split('.');
-                if(newArr.length > 5 && !evt.target.value.includes('.')){
+                
+                console.log(newArr);
+               
+                if( foundNum && newArr.length > 5 && !evt.target.value.includes('.')){
                     newArr.splice(5, 0, '.');
                     evt.target.value = newArr.join('');
+                    this.lastValue = evt.target.value;
                 }
-                else if(beforeDot[0].length < 5 && beforeDot[1].length <= 3){
-                    return;
+                else if(beforeDot.length === 2 && beforeDot[0].length < 5 && beforeDot[1].length <= 3){
+                    //console.log(evt.target.value.split("."));
+                    //console.log(evt.target.value.split)
+                    const found = evt.target.value.split('').every(r => keysAllowed.includes(r))
+                    console.log(found);
+                    if(found){
+                        this.lastValue = evt.target.value;
+                    }
+                    else{
+                        evt.target.value = this.lastValue;
+                    }
+                    
                 }
                 else{
                     console.log('im here')

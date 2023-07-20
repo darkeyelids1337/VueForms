@@ -1,55 +1,41 @@
 <template style=" background-color:#f4f7f6;">
-    <div v-if="!isError">
+    <div>
         <h1>InfoTable</h1>
         <h2>Добро пожаловать, {{ userInfo.name  }}</h2>
-        <form @submit.prevent="submitForm">
-            <div class="table-class">
-              
-                <div class="table-column">
-                    <P>Тип счетчика</P>
-                    <p>
-                    Электричество
-                </p>
-                <p>
-                    Вода 
-                </p>
-                <p>
-                    Тепло
-                </p>
-                </div>
-                
-                <div class="table-column">
-                    <p>Текущие показания</p>
-                    <div class="values">
-                        {{ userInfo.electricity }}
-                    </div>  
-                    <div class="values">
-                        {{ userInfo.water }}
-                    </div>
-                    <div class="values">  
-                        {{ userInfo.warm }}
-                    </div>
-                    
-                </div>
-                <div class="table-column">
-                    <p>Ввод значений</p>
-                    <div>
-                        <InputComponent @changeModel="(data) => this.formElectricity = data" :before="5" :after="3"></InputComponent>
-                    </div>  
-                    <div>
-                        <InputComponent @changeModel="(data) => this.formWater = data" :before="5" :after="3"></InputComponent>
-                    </div>
-                    <div>  
-                        <InputComponent @changeModel="(data) => this.formWarm = data" :before="5" :after="3"></InputComponent>
-                    </div>
-                    
-                </div>
-            </div>
+        <form @submit.prevent="submitForm($event)" ref="formItem">
+            <table class="table-class">
+                <tr>
+                    <th v-for="(item, index) in Object.keys(userInfo['NodeList'][0])" :key="index" >
+                        {{ item.toUpperCase() }}
+                    </th>
+                    <th>Новые значения</th>
+                    <th>Разница </th>
+                </tr>
+                <tr v-for="item in userInfo['NodeList']" :key="item">
+                    <td>
+                        {{ item['прибор'] }}
+                    </td>
+                    <td>
+                        {{ item['значение'] }}
+                    </td>
+                    <td>
+                        {{ item['номер счетчика'] }}
+                    </td>
+                    <td>
+                        <InputComponent :before="5" :after="3" @changeModel="checkInput" :meter ="item['прибор']" :class="{errorClass: isError}"></InputComponent>
+                        <p class="errorP" v-if="isError">Перепроверьте данные!</p>
+                    </td>
+                    <td :style="(meters[item['прибор']] - item['значение']) < 0 ? errorStyle : okStyle" >
+                        {{  meters[item['прибор']] ? (meters[item['прибор']] - item['значение']).toFixed(3) : 0 }}
+                    </td>
+                    <!-- :class="{errorClass: meters[item['прибор']] - item['значение'] < 0 ? true : false}" -->
+                </tr>
+            </table>
            <button type="submit" :disabled="toDisable">Отправить</button>
         </form>
     </div>
-    <div v-else>
-            <h2>К сожалению вы ввели данные меньше предыдущих показаний или некорректные данные. Перепроверьтре и введите еще раз</h2>
+    <div v-if="isError" class="modal-class">
+            <h2>К сожалению вы ввели данные меньше предыдущих показаний или некорректные данные. Перепроверьте и введите еще раз</h2>
             <button type="button" @click.prevent="isError = !isError">Вернуться</button>
     </div>
 </template>
@@ -65,62 +51,98 @@ export default{
     data(){
         return {
             userInfo: {
-
+                name: 'Artem'
             },
-            formElectricity: "",
-            formWater: "",
-            formWarm: "",
-            isDisabled: true,
+            meters:{
+                
+            },
+            isDisabled: [],
             isError: false,
+            
         }
     },
     created(){
         if(this.$store.getters.getData[0]){
-            this.userInfo = this.$store.getters.getData[0];
+           this.userInfo = this.$store.getters.getData[0];
         }
     },
     computed:{
         toDisable(){
-            const something = +this.formElectricity + +this.formWater + +this.formWarm;
-            return something === 0;
+            const meters = JSON.parse(JSON.stringify(this.meters));
+            console.log(Object.values(meters));
+            let disabled = true;
+            if(!meters){
+                return disabled;
+            }
+            Object.values(meters).forEach((item) => {
+                if(item !== ''){
+                    return disabled = !disabled;
+                }
+            })
+            return disabled;
+        },
+        okStyle(){
+            return {
+                color: `green`
+            }
+        },
+        errorStyle(){
+            return {
+                color: `red`
+            }
         }
     },
     methods:{
-        isFloat(number){
-            return Number(number) === number && number % 1 !== 0;
-        },
         submitForm(){
-            console.log(+this.formElectricity === Number(this.formElectricity) && +this.formWater === Number(this.formWater) && +this.formWarm === Number(this.formWarm));
-            console.log( +this.formWater === Number(this.formWater));
-            console.log(+this.formWarm);
-            if(this.userInfo.electricity > +this.formElectricity && this.userInfo.water > +this.formWater && this.userInfo.warm > +this.formWarm){
-                return this.isError = true;
-            }
-            else if(+this.formElectricity === Number(this.formElectricity) && +this.formWater === Number(this.formWater) && +this.formWarm === Number(this.formWarm)){
+            const meters = JSON.parse(JSON.stringify(this.meters));
+            const prevValues = JSON.parse(JSON.stringify(this.userInfo['NodeList']));
+            prevValues.forEach((item) => {
+                if(item['значение'] > meters[item['прибор']] || +meters[item['прибор']] !== Number(meters[item['прибор']]) ){
+                    return this.isError = true;
+                }
+            })
+            if(!this.isError){
                 this.$router.push('success');
             }
-            else this.isError = true;
+            
         },
+        checkInput(){
+           const {meter, value} = this.$store.getters.getNewValues;
+           this.meters[meter] = value;
+        }
+        
     }
 }
 </script>
 
 <style scoped>
+.errorClass{
+    color: red;
+}
+.okClass{
+    color: rgb(2, 0, 128);
+}
+.errorP{
+    color: red;
+    font-size: 12px;
+    
+}
 .table-class{
-    margin-top: 50px;
-    display: flex;
-    gap: 20px;
+    border-collapse: collapse;
+    width: 100%;
+    /* margin-top:15px */
+    
 }
-.table-column{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #04AA6D;
+    color: white;
 }
-.table-column > div{
-    border: 2px solid #1C6EA4;
-}
-.table-column > p{
-    border: 2px solid #1C6EA4;
+td{
+    border: 1px solid #ddd;
+  padding: 8px;
 }
 p{
     margin: 0;
@@ -136,7 +158,7 @@ form{
     justify-content: space-between;
     align-items: center;
     gap:20px;
-    max-width: 50%;
+    max-width: 70%;
     border: 1px solid #1C6EA4;
     
 }
@@ -162,5 +184,60 @@ button{
   }
   button:active{
     background-color: rgb(18, 248, 18);
+  }
+  @keyframes myAnim {
+	0% {
+		animation-timing-function: ease-in;
+		opacity: 1;
+		transform: translateY(-45px);
+	}
+
+	24% {
+		opacity: 1;
+	}
+
+	40% {
+		animation-timing-function: ease-in;
+		transform: translateY(-24px);
+	}
+
+	65% {
+		animation-timing-function: ease-in;
+		transform: translateY(-12px);
+	}
+
+	82% {
+		animation-timing-function: ease-in;
+		transform: translateY(-6px);
+	}
+
+	93% {
+		animation-timing-function: ease-in;
+		transform: translateY(-4px);
+	}
+
+	25%,
+	55%,
+	75%,
+	87% {
+		animation-timing-function: ease-out;
+		transform: translateY(0px);
+	}
+
+	100% {
+		animation-timing-function: ease-out;
+		opacity: 1;
+		transform: translateY(0px);
+	}
+}
+
+  .modal-class{
+    animation: myAnim 1s ease 0s 1 normal forwards;
+    position: fixed;
+    top:1%;
+    background-color: rgba(128, 128, 128, 0.979);
+    z-index: 2;
+   /* width: 500px; */
+    padding: 15px;
   }
 </style>

@@ -2,8 +2,9 @@ import Vuex from 'vuex'
 interface UsersInterface{
    users: Array<{name:string; bankBook:number;}>,
    foundUser: Array<{name:string; bankBook:number;}>,
-   data: Array<{bankBook:number; name:string; electricity: number; water: number; warm: number}>,
-   bankBook: number
+   data: Array<{bankBook:number; name:string; NodeList: Array<{'прибор': string; 'значение': number; 'номер счетчика': number;}>;}>,
+   bankBook: number,
+   newValues: object
 }
 export default new Vuex.Store({
   state: {
@@ -28,26 +29,72 @@ export default new Vuex.Store({
         {
             bankBook:123456,
             name:'Artem',
-            electricity: 170.25,
-            water: 16.55,
-            warm: 13.33
+            NodeList: [
+                {
+                    'прибор':'electricity',
+                    'значение': 170.25,
+                    'номер счетчика': 500500,
+                },
+                {
+                    'прибор': 'water',
+                    'значение':16.55,
+                    'номер счетчика': 100500
+                },
+                {
+                    'прибор': 'warm',
+                    'значение': 13.33,
+                    'номер счетчика': 300500
+                },
+            ],
         },
         {
             bankBook:171171,
             name: 'Andrey',
-            electricity: 170.25,
-            water: 16.55,
-            warm: 13.33
+            NodeList: [
+                {
+                    'прибор':'electricity',
+                    'значение': 170.25,
+                    'номер счетчика': 500500,
+                },
+                {
+                    'прибор': 'water',
+                    'значение':16.55,
+                    'номер счетчика': 100500
+                },
+                {
+                    'прибор': 'warm',
+                    'значение': 13.33,
+                    'номер счетчика': 300500
+                },
+            ],
         },
         {
             bankBook:133713,
-            electricity: 170.25,
             name:'Kirill',
-            water: 16.55,
-            warm: 13.33
+            NodeList: [
+                {
+                    'прибор':'electricity',
+                    'значение': 170.25,
+                    'номер счетчика': 500500,
+                },
+                {
+                    'прибор': 'water',
+                    'значение':16.55,
+                    'номер счетчика': 100500
+                },
+                {
+                    'прибор': 'warm',
+                    'значение': 13.33,
+                    'номер счетчика': 300500
+                },
+            ],
         },
     ],
     bankBook: 0,
+    newValues:{
+        meter: 'meter',
+        value: 1
+    }
   } as UsersInterface,
   getters:{
     getUsers(state){
@@ -58,10 +105,16 @@ export default new Vuex.Store({
     },
     getData(state){
         const bankBook = state.foundUser[0]['bankBook'];
+        //console.log(state.data.filter((user) => user['bankBook'] === bankBook));
+        //console.log(JSON.stringify(state.data.filter((user) => user['bankBook'] === bankBook)));
         return JSON.parse(JSON.stringify(state.data.filter((user) => user['bankBook'] === bankBook)));
+        //return JSON.stringify(state.data.filter((user) => user['bankBook'] === bankBook));
     },
     getBankBook(state){
         return state.bankBook;
+    },
+    getNewValues(state){
+        return JSON.parse(JSON.stringify(state.newValues));
     }
   },
   mutations: {
@@ -70,6 +123,9 @@ export default new Vuex.Store({
     },
     setBankBook(state, payload){
         state.bankBook = payload;
+    },
+    setNewValues(state, payload){
+        state.newValues = payload;
     }
   }
 })

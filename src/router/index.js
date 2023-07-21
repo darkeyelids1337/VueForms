@@ -1,7 +1,7 @@
-import InputForm from '../components/InputForm'
-import InfoTable from '../components/InfoTable';
+import InputForm from '../views/InputForm'
+import InfoTable from '../views/InfoTable';
 import ErrorPage from '../components/ErrorPage';
-import SuccessComponent from '../components/SuccessComponent';
+//import SuccessComponent from '../components/SuccessComponent';
 import {createRouter, createWebHistory} from 'vue-router';
 export default new createRouter({
     history: createWebHistory(),
@@ -15,11 +15,6 @@ export default new createRouter({
             path:'/info-table',
             name:'InfoTable',
             component: InfoTable
-        },
-        {
-            path:'/success',
-            name:'success',
-            component: SuccessComponent,
         },
         {
             path:'/404',

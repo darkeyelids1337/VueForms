@@ -27,24 +27,20 @@
                     <td :style="(item['Текущее значение'] - item['значение']) < 0  ? errorStyle : okStyle" >
                         {{ (item['Текущее значение'] === 0 ? 0 : item['Текущее значение'] - item['значение']).toFixed(3)}}
                     </td>
-                    <!-- :class="{errorClass: meters[item['прибор']] - item['значение'] < 0 ? true : false}" -->
                 </tr>
             </table>
            <button type="submit" :disabled="toDisable" :style="{marginBottom: '15px', marginTop: '0px'}">Отправить</button>
         </form>
     </div>
-    <ModalComponent v-if="isModal" @closeModal = 'fromModal' @clickOn="fromModal">
+    <ModalComponent :isVisible="isModal" :isSuccess="isSuccess" @closeModal = 'fromModal'>
             <h2>К сожалению вы ввели данные меньше предыдущих показаний или некорректные данные. Перепроверьте и введите еще раз</h2>
     </ModalComponent>
-    <!-- <div v-if="isModal" class="modal-class" v-click-away = 'fromModal'>
-            
-    </div> -->
 </template>
 
 
 <script>
-import InputComponent from './InputComponent.vue';
-import ModalComponent from './ModalComponent.vue';
+import InputComponent from '../components/InputComponent';
+import ModalComponent from '../components/ModalComponent';
 export default{
     name:'InfoTable',
     components: {
@@ -62,6 +58,7 @@ export default{
             isDisabled: [],
             isError: false,
             isModal: false,
+            isSuccess: false,
             
         }
     },
@@ -102,12 +99,13 @@ export default{
                 }
             })
             if(!this.isModal){
-                this.$router.push('success');
+                this.isSuccess = true;
             }
             
         },
         fromModal(){
-              this.isModal = !this.isModal;
+              this.isModal = false;
+              this.isSuccess = false;
         //    this.isError = !this.isError
         },
         checkClick(evt){

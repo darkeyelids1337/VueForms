@@ -15,14 +15,14 @@
       <button type="button" @click.prevent='isError = !isError'>Закрыть</button>
     </div> -->
   </form>
-  <ModalComponent v-if="isError" @closeModal="closeModal" @clickOn="isError = !isError">
+  <ModalComponent :isVisible="isError" @closeModal="closeModal">
       <h1>Такой лицевой счет не найден =(</h1>
     </ModalComponent>
 </template>
 
 <script>
-import InputComponent from './InputComponent.vue';
-import ModalComponent from './ModalComponent.vue';
+import InputComponent from '../components/InputComponent';
+import ModalComponent from '../components/ModalComponent';
 export default {
   name: 'InputForm',
   components:{

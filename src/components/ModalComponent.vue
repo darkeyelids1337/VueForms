@@ -1,27 +1,46 @@
 <template>
-    <div class="modal-wrapper" @click="clickAway" @mousedown="clickAway($event)">
+    <div class="modal-wrapper" @click="closeModal" v-if="isVisible">
         <div class="modal-class">
             <slot>
 
             </slot>
-            <div class="close-icon" @click="clickOn">X</div>
-            <button type="button" @click.prevent="clickOn">Закрыть</button>
+            <div class="close-icon" @click="closeModal">X</div>
+            <button type="button" @click.prevent="closeModal" class="close-button">Закрыть</button>
         </div>
+    </div>
+    <div v-else-if="isSuccess && !isVisible" class="success-modal">
+        <h1>Успешно</h1>
+        <button type="button" @click.prevent="backHome">На главную</button>
     </div>
 </template>
 
 <script>
     export default{
         name:'ModalComponent',
+        props:{
+            isVisible:{
+                type:Boolean,
+                default: false,
+            },
+            isSuccess:{
+                type: Boolean,
+                default:false,
+            }
+        },
         methods: {
-            clickAway(evt){
-                if(evt.srcElement.classList.value === 'modal-wrapper'){
+            closeModal(evt){
+                const clickElement = evt.srcElement.classList.value;
+                if(clickElement === 'modal-wrapper'){
+                    this.$emit('closeModal') 
+                }
+                else if(clickElement === 'close-button' || clickElement === 'close-icon'){
+                    console.log(evt.srcElement.classList)
                     this.$emit('closeModal') 
                 }
                   
             },
-            clickOn(){
-                this.$emit('clickOn');
+            backHome(){
+                this.$router.push('/')
             }
         },
     }
@@ -51,6 +70,18 @@
     max-height: 28%;
     box-shadow: -5px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
   }
+  .success-modal{
+    position: absolute;
+    left: 35%;
+    bottom: 60%;
+    width: 30%;
+    height: 150px;
+    padding: 15px;
+    background-color: #04AA6D;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: -5px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+  }
   button{
     border-radius: 15px;
     border-color: white;
@@ -63,6 +94,8 @@
   button:active{
     background-color: rgb(18, 248, 18);
   }
+  
+ 
   @keyframes myAnim {
 	0% {
 		animation-timing-function: ease-in;

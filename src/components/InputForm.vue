@@ -9,9 +9,10 @@
       <button @click.prevent = "submitForm" type="submit">Проверить</button>
     </div>
     </div>
-    <div v-if="isError" class="modal-class">
+    <div v-if="isError" class="modal-class" v-click-away="closeModal">
+      <div @click.prevent='isError = !isError'>X</div>
       <h1>Такой лицевой счет не найден =(</h1>
-      <button type="button" @click.prevent='isError = !isError'>Вернуться</button>
+      <button type="button" @click.prevent='isError = !isError'>Закрыть</button>
     </div>
     
  
@@ -51,6 +52,9 @@ export default {
         return this.isError = true;
       } 
     },
+    closeModal(){
+      this.isError = false;
+    },
     isNumberInput(evt){
       let charCode = (evt.which) ? evt.which : evt.keyCode;
       if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
@@ -75,6 +79,7 @@ export default {
     height: 200px;
     margin: 0 auto;
     background-color:#f4f7f6;
+    box-shadow: 0px 5px 10px 10px rgba(34, 60, 80, 0.2) inset;
   }
   .active{
     color: red;
@@ -129,17 +134,22 @@ export default {
     animation: myAnim 1s ease 0s 1 normal forwards;
     position: fixed;
     top:15%;
+    left: 38%;
     z-index: 2;
     padding: 15px;
     border: 1px solid #ddd;
-    padding: 8px;
     text-align: center;
     background-color: #04AA6D;
     border-radius: 5px;
+    width: 400px;
+    height: 250px;
+    box-shadow: -5px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
   }
   .form-div{
+    padding: 5px;
     text-align: center;
     margin-top:50%;
+    
   }
   button{
     border-radius: 15px;
@@ -153,7 +163,10 @@ export default {
   button:active{
     background-color: rgb(18, 248, 18);
   }
-  /* button:hover{
-    background-color: rgb(250, 250, 252);
-  } */
+  .modal-class > div{
+    position: relative;
+    left: 50%;
+    bottom: 3%;
+    cursor: pointer;
+  }
 </style>

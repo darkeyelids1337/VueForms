@@ -32,13 +32,28 @@ export default{
             const keysAllowed = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
             const keysAllowedNum = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
             const foundNum = evt.target.value.split('').every(r => keysAllowedNum.includes(r))
-            if(evt.inputType === "deleteContentBackward" && evt.target.value.split('').length < 5 ){
+            // if(evt.inputType === "deleteContentBackward" && !evt.target.value.split('').length < this.before - 1){
+            //     console.log(evt.target.value.split(''))
+            //     this.lastValue = currentValue;
+            //     this.changeModel();
+            // }
+            if(evt.inputType === "deleteContentBackward"){
+                console.log('here2')
                 const newArr = evt.target.value.split('');
-                evt.target.value = newArr.join('');
-                currentValue = newArr.join('');
-                this.lastValue = currentValue;
-                this.changeModel();
+                if(!newArr.includes('.') && this.lastValue.includes('.')){
+                    console.log('da');
+                    console.log(this.lastValue);
+                    evt.target.value = this.lastValue;
+                }
+                else{
+                    currentValue = newArr.join('');
+                    console.log(currentValue);
+                    this.lastValue = currentValue;
+                    this.changeModel();
+                }
+               
             }
+            
             else if (!currentValue.match(regex)){
                 const newArr = evt.target.value.split(''); 
                 const beforeDot = evt.target.value.split('.');
@@ -52,9 +67,9 @@ export default{
                 }
                 else if(beforeDot.length === 2 && beforeDot[0].length < 5 && beforeDot[1].length <= 3){
                     const found = evt.target.value.split('').every(r => keysAllowed.includes(r))
-                    console.log(found);
                     if(found){
                         this.lastValue = evt.target.value;
+                        this.changeModel();
                     }
                     else{
                         evt.target.value = this.lastValue;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="main">
     <div>
         <RouterView></RouterView>
     </div>
@@ -13,6 +13,11 @@ export default{
   components:{
     RouterView
   },
+  methods:{
+    checkClick(evt){
+      console.log(evt)
+    }
+  }
 }
 </script>
 
@@ -24,5 +29,8 @@ export default{
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+body{
+  background-color: #e5eaf5;
 }
 </style>

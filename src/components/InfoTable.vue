@@ -1,4 +1,4 @@
-<template style=" background-color:#f4f7f6;">
+<template>
     <div>
         <h1>InfoTable</h1>
         <h2>Добро пожаловать, {{ userInfo.name  }}</h2>
@@ -22,7 +22,7 @@
                     </td>
                     <td>
                         <InputComponent :before="5" :after="3" @changeModel="checkInput" :meter="item['прибор']"></InputComponent>
-                        <p class="errorP" v-if="isError && (item['Текущее значение'] - item['значение']) < 0">Перепроверьте данные!</p>
+                        <p class="errorP" v-if="isError && item['Текущее значение'] - item['значение'] < 0 ">Перепроверьте данные!</p>
                     </td>
                     <td :style="(item['Текущее значение'] - item['значение']) < 0  ? errorStyle : okStyle" >
                         {{ (item['Текущее значение'] === 0 ? 0 : item['Текущее значение'] - item['значение']).toFixed(3)}}
@@ -30,12 +30,13 @@
                     <!-- :class="{errorClass: meters[item['прибор']] - item['значение'] < 0 ? true : false}" -->
                 </tr>
             </table>
-           <button type="submit" :disabled="toDisable">Отправить</button>
+           <button type="submit" :disabled="toDisable" :style="{marginBottom: '15px', marginTop: '0px'}">Отправить</button>
         </form>
     </div>
-    <div v-if="isError" class="modal-class">
+    <div v-if="isModal" class="modal-class" v-click-away = 'fromModal'>
+            <div @click.prevent="fromModal">X</div>
             <h2>К сожалению вы ввели данные меньше предыдущих показаний или некорректные данные. Перепроверьте и введите еще раз</h2>
-            <button type="button" @click.prevent="isError = !isError">Вернуться</button>
+            <button type="button" @click.prevent="fromModal">Закрыть</button>
     </div>
 </template>
 
@@ -57,6 +58,7 @@ export default{
             },
             isDisabled: [],
             isError: false,
+            isModal: false,
             
         }
     },
@@ -92,13 +94,21 @@ export default{
             const prevValues = JSON.parse(JSON.stringify(this.userInfo['NodeList']));
             prevValues.forEach((item) => {
                 if(item['значение'] > item['Текущее значение'] ){
-                    return this.isError = true;
+                    this.isModal = true;
+                    this.isError = true;
                 }
             })
-            if(!this.isError){
+            if(!this.isModal){
                 this.$router.push('success');
             }
             
+        },
+        fromModal(){
+              this.isModal = !this.isModal;
+        //    this.isError = !this.isError
+        },
+        checkClick(evt){
+            console.log(evt);
         },
         checkInput(value, meter){
             const newValues = {
@@ -232,16 +242,23 @@ button{
   .modal-class{
     animation: myAnim 1s ease 0s 1 normal forwards;
     position: fixed;
-    top:1%;
-    left:15%;
-    right: 15%;
+    top:10%;
+    left:40%;
     border: 1px solid #ddd;
-    padding: 8px;
     text-align: center;
     background-color: #04AA6D;
     color: white;
     z-index: 2;
     padding: 15px;
     border-radius: 5px;
+    width: 400px;
+    height: 300px;
+    box-shadow: -5px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+  }
+  .modal-class > div{
+    position: relative;
+    left: 50%;
+    bottom: 3%;
+    cursor: pointer;
   }
 </style>

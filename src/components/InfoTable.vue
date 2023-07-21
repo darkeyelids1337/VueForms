@@ -8,7 +8,6 @@
                     <th v-for="(item, index) in Object.keys(userInfo['NodeList'][0])" :key="index" >
                         {{ item.toUpperCase() }}
                     </th>
-                    <th>Новые значения</th>
                     <th>Разница </th>
                 </tr>
                 <tr v-for="item in userInfo['NodeList']" :key="item">
@@ -22,11 +21,11 @@
                         {{ item['номер счетчика'] }}
                     </td>
                     <td>
-                        <InputComponent :before="5" :after="3" @changeModel="checkInput" :meter ="item['прибор']" :class="{errorClass: isError}"></InputComponent>
-                        <p class="errorP" v-if="isError">Перепроверьте данные!</p>
+                        <InputComponent :before="5" :after="3" @changeModel="checkInput" :meter="item['прибор']"></InputComponent>
+                        <p class="errorP" v-if="isError && (item['Текущее значение'] - item['значение']) < 0">Перепроверьте данные!</p>
                     </td>
-                    <td :style="(meters[item['прибор']] - item['значение']) < 0 ? errorStyle : okStyle" >
-                        {{  meters[item['прибор']] ? (meters[item['прибор']] - item['значение']).toFixed(3) : 0 }}
+                    <td :style="(item['Текущее значение'] - item['значение']) < 0  ? errorStyle : okStyle" >
+                        {{ (item['Текущее значение'] === 0 ? 0 : item['Текущее значение'] - item['значение']).toFixed(3)}}
                     </td>
                     <!-- :class="{errorClass: meters[item['прибор']] - item['значение'] < 0 ? true : false}" -->
                 </tr>
@@ -62,21 +61,16 @@ export default{
         }
     },
     created(){
-        if(this.$store.getters.getData[0]){
-           this.userInfo = this.$store.getters.getData[0];
+        if(this.$store.getters.getData){
+           this.userInfo = this.$store.getters.getData;
         }
     },
     computed:{
         toDisable(){
-            const meters = JSON.parse(JSON.stringify(this.meters));
-            console.log(Object.values(meters));
             let disabled = true;
-            if(!meters){
-                return disabled;
-            }
-            Object.values(meters).forEach((item) => {
-                if(item !== ''){
-                    return disabled = !disabled;
+            this.userInfo.NodeList.forEach((item) => {
+                if(item['Текущее значение'] > 0){
+                    disabled = false;
                 }
             })
             return disabled;
@@ -94,10 +88,10 @@ export default{
     },
     methods:{
         submitForm(){
-            const meters = JSON.parse(JSON.stringify(this.meters));
+            //const meters = JSON.parse(JSON.stringify(this.meters));
             const prevValues = JSON.parse(JSON.stringify(this.userInfo['NodeList']));
             prevValues.forEach((item) => {
-                if(item['значение'] > meters[item['прибор']] || +meters[item['прибор']] !== Number(meters[item['прибор']]) ){
+                if(item['значение'] > item['Текущее значение'] ){
                     return this.isError = true;
                 }
             })
@@ -106,9 +100,16 @@ export default{
             }
             
         },
-        checkInput(){
-           const {meter, value} = this.$store.getters.getNewValues;
-           this.meters[meter] = value;
+        checkInput(value, meter){
+            const newValues = {
+            'meter': meter,
+            'value': value
+            };
+            this.$store.commit('setCurrentValue', newValues);
+            const some = JSON.parse(JSON.stringify(this.$store.getters.getData))
+              this.userInfo['NodeList'].forEach((item, index) => {
+                item['Текущее значение'] = some.NodeList[index]['Текущее значение']
+              })
         }
         
     }
@@ -116,9 +117,6 @@ export default{
 </script>
 
 <style scoped>
-.errorClass{
-    color: red;
-}
 .okClass{
     color: rgb(2, 0, 128);
 }
@@ -142,7 +140,7 @@ th{
 }
 td{
     border: 1px solid #ddd;
-  padding: 8px;
+    padding: 8px;
 }
 p{
     margin: 0;
@@ -235,9 +233,15 @@ button{
     animation: myAnim 1s ease 0s 1 normal forwards;
     position: fixed;
     top:1%;
-    background-color: rgba(128, 128, 128, 0.979);
+    left:15%;
+    right: 15%;
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: #04AA6D;
+    color: white;
     z-index: 2;
-   /* width: 500px; */
     padding: 15px;
+    border-radius: 5px;
   }
 </style>

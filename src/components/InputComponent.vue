@@ -37,6 +37,7 @@ export default{
                 evt.target.value = newArr.join('');
                 currentValue = newArr.join('');
                 this.lastValue = currentValue;
+                this.changeModel();
             }
             else if (!currentValue.match(regex)){
                 const newArr = evt.target.value.split(''); 
@@ -44,14 +45,12 @@ export default{
                 
                 console.log(newArr);
                
-                if( foundNum && newArr.length > 5 && !evt.target.value.includes('.')){
-                    newArr.splice(5, 0, '.');
+                if( foundNum && newArr.length > this.before && !evt.target.value.includes('.')){
+                    newArr.splice(this.before, 0, '.');
                     evt.target.value = newArr.join('');
                     this.lastValue = evt.target.value;
                 }
                 else if(beforeDot.length === 2 && beforeDot[0].length < 5 && beforeDot[1].length <= 3){
-                    //console.log(evt.target.value.split("."));
-                    //console.log(evt.target.value.split)
                     const found = evt.target.value.split('').every(r => keysAllowed.includes(r))
                     console.log(found);
                     if(found){
@@ -70,6 +69,7 @@ export default{
             }
             else{
                 this.lastValue = currentValue;
+                this.changeModel();
             } 
         },
         onFocusOut(evt){
@@ -86,17 +86,14 @@ export default{
             }
             else{
                 this.value = text;
-                // this.isNumberInput(evt, this.value);
                 this.changeModel();
             }    
         },
     changeModel(){
-        const newValues = {
-            'meter': this.meter,
-            'value': this.value
-        };
-        this.$store.commit('setNewValues', newValues);
-        this.$emit('changeModel', this.value);
+        this.$emit('changeModel', this.value, this.meter);
+        
+        
+        
     }
     },
 }

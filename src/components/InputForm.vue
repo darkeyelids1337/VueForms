@@ -129,10 +129,13 @@ export default {
     animation: myAnim 1s ease 0s 1 normal forwards;
     position: fixed;
     top:15%;
-    background-color: rgba(128, 128, 128, 0.979);
     z-index: 2;
-   /* width: 500px; */
     padding: 15px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: #04AA6D;
+    border-radius: 5px;
   }
   .form-div{
     text-align: center;

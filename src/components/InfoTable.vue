@@ -33,10 +33,8 @@
            <button type="submit" :disabled="toDisable" :style="{marginBottom: '15px', marginTop: '0px'}">Отправить</button>
         </form>
     </div>
-    <ModalComponent v-if="isModal"  @closeModal = 'fromModal'>
-            <div @click.prevent="fromModal">X</div>
+    <ModalComponent v-if="isModal" @closeModal = 'fromModal' @clickOn="fromModal">
             <h2>К сожалению вы ввели данные меньше предыдущих показаний или некорректные данные. Перепроверьте и введите еще раз</h2>
-            <button type="button" @click.prevent="fromModal">Закрыть</button>
     </ModalComponent>
     <!-- <div v-if="isModal" class="modal-class" v-click-away = 'fromModal'>
             

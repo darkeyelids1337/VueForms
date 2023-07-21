@@ -9,17 +9,15 @@
       <button @click.prevent = "submitForm" type="submit">Проверить</button>
     </div>
     </div>
-    <ModalComponent v-if="isError" @closeModal="closeModal">
-      <div @click.prevent='isError = !isError'>X</div>
-      <h1>Такой лицевой счет не найден =(</h1>
-      <button type="button" @click.prevent='isError = !isError'>Закрыть</button>
-    </ModalComponent>
     <!-- <div v-if="isError" class="modal-class" v-click-away="closeModal">
       <div @click.prevent='isError = !isError'>X</div>
       
       <button type="button" @click.prevent='isError = !isError'>Закрыть</button>
     </div> -->
   </form>
+  <ModalComponent v-if="isError" @closeModal="closeModal" @clickOn="isError = !isError">
+      <h1>Такой лицевой счет не найден =(</h1>
+    </ModalComponent>
 </template>
 
 <script>
@@ -134,22 +132,6 @@ export default {
 		transform: translateY(0px);
 	}
 }
-
-  /* .modal-class{
-    animation: myAnim 1s ease 0s 1 normal forwards;
-    position: fixed;
-    top:15%;
-    left: 38%;
-    z-index: 2;
-    padding: 15px;
-    border: 1px solid #ddd;
-    text-align: center;
-    background-color: #04AA6D;
-    border-radius: 5px;
-    width: 400px;
-    height: 250px;
-    box-shadow: -5px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
-  } */
   .form-div{
     padding: 5px;
     text-align: center;

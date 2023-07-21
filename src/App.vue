@@ -1,5 +1,5 @@
-<template>
-  <div id="main">
+<template ref="mainRef">
+  <div>
     <div>
         <RouterView></RouterView>
     </div>
@@ -29,8 +29,15 @@ export default{
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  width:100%;
+  height: 100%;
+ 
+}
+html{
+  height: 100%;
 }
 body{
   background-color: #e5eaf5;
+  height: 100%;
 }
 </style>

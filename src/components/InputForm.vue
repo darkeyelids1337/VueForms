@@ -9,22 +9,27 @@
       <button @click.prevent = "submitForm" type="submit">Проверить</button>
     </div>
     </div>
-    <div v-if="isError" class="modal-class" v-click-away="closeModal">
+    <ModalComponent v-if="isError" @closeModal="closeModal">
       <div @click.prevent='isError = !isError'>X</div>
       <h1>Такой лицевой счет не найден =(</h1>
       <button type="button" @click.prevent='isError = !isError'>Закрыть</button>
-    </div>
-    
- 
+    </ModalComponent>
+    <!-- <div v-if="isError" class="modal-class" v-click-away="closeModal">
+      <div @click.prevent='isError = !isError'>X</div>
+      
+      <button type="button" @click.prevent='isError = !isError'>Закрыть</button>
+    </div> -->
   </form>
 </template>
 
 <script>
 import InputComponent from './InputComponent.vue';
+import ModalComponent from './ModalComponent.vue';
 export default {
   name: 'InputForm',
   components:{
     InputComponent,
+    ModalComponent
   },
   data(){
     return {
@@ -130,7 +135,7 @@ export default {
 	}
 }
 
-  .modal-class{
+  /* .modal-class{
     animation: myAnim 1s ease 0s 1 normal forwards;
     position: fixed;
     top:15%;
@@ -144,7 +149,7 @@ export default {
     width: 400px;
     height: 250px;
     box-shadow: -5px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
-  }
+  } */
   .form-div{
     padding: 5px;
     text-align: center;
@@ -163,10 +168,10 @@ export default {
   button:active{
     background-color: rgb(18, 248, 18);
   }
-  .modal-class > div{
+  /* .modal-class > div{
     position: relative;
     left: 50%;
     bottom: 3%;
     cursor: pointer;
-  }
+  } */
 </style>

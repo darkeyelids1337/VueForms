@@ -106,9 +106,6 @@ export default{
         },
     changeModel(){
         this.$emit('changeModel', this.value, this.meter);
-        
-        
-        
     }
     },
 }

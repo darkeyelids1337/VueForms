@@ -33,20 +33,25 @@
            <button type="submit" :disabled="toDisable" :style="{marginBottom: '15px', marginTop: '0px'}">Отправить</button>
         </form>
     </div>
-    <div v-if="isModal" class="modal-class" v-click-away = 'fromModal'>
+    <ModalComponent v-if="isModal"  @closeModal = 'fromModal'>
             <div @click.prevent="fromModal">X</div>
             <h2>К сожалению вы ввели данные меньше предыдущих показаний или некорректные данные. Перепроверьте и введите еще раз</h2>
             <button type="button" @click.prevent="fromModal">Закрыть</button>
-    </div>
+    </ModalComponent>
+    <!-- <div v-if="isModal" class="modal-class" v-click-away = 'fromModal'>
+            
+    </div> -->
 </template>
 
 
 <script>
 import InputComponent from './InputComponent.vue';
+import ModalComponent from './ModalComponent.vue';
 export default{
     name:'InfoTable',
     components: {
         InputComponent,
+        ModalComponent,
     },
     data(){
         return {
@@ -193,7 +198,7 @@ button{
   button:active{
     background-color: rgb(18, 248, 18);
   }
-  @keyframes myAnim {
+  /* @keyframes myAnim {
 	0% {
 		animation-timing-function: ease-in;
 		opacity: 1;
@@ -260,5 +265,5 @@ button{
     left: 50%;
     bottom: 3%;
     cursor: pointer;
-  }
+  } */
 </style>

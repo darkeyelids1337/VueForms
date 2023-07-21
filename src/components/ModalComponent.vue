@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-wrapper" @click="clickAway">
+    <div class="modal-wrapper" @click="clickAway" @mousedown="clickAway($event)">
         <div class="modal-class">
             <slot>
 
@@ -12,8 +12,11 @@
     export default{
         name:'ModalComponent',
         methods: {
-            clickAway(){
-                this.$emit('closeModal')   
+            clickAway(evt){
+                if(evt.srcElement.classList.value === 'modal-wrapper'){
+                    this.$emit('closeModal') 
+                }
+                  
             }
         },
     }

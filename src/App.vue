@@ -1,24 +1,19 @@
 <template ref="mainRef">
   <div>
     <div>
-        <RouterView></RouterView>
+      <RouterView></RouterView>
     </div>
   </div>
 </template>
 
 <script>
-import { RouterView } from 'vue-router';
-export default{
-  name:'App',
-  components:{
-    RouterView
+import { RouterView } from "vue-router";
+export default {
+  name: "App",
+  components: {
+    RouterView,
   },
-  methods:{
-    checkClick(evt){
-      console.log(evt)
-    }
-  }
-}
+};
 </script>
 
 <style>
@@ -29,14 +24,13 @@ export default{
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-  width:100%;
-  height: 100%;
- 
-}
-html{
+  width: 100%;
   height: 100%;
 }
-body{
+html {
+  height: 100%;
+}
+body {
   background-color: #e5eaf5;
   height: 100%;
 }

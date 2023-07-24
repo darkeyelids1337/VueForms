@@ -70,7 +70,9 @@
     max-height: 28%;
     box-shadow: -5px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
   }
+
   .success-modal{
+    animation: myAnim 1s ease 0s 1 normal forwards;
     position: absolute;
     left: 35%;
     bottom: 60%;

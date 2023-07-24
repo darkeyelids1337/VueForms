@@ -1,25 +1,20 @@
-import InputForm from '../views/InputForm'
-import InfoTable from '../views/InfoTable';
-import ErrorPage from '../components/ErrorPage';
-//import SuccessComponent from '../components/SuccessComponent';
 import {createRouter, createWebHistory} from 'vue-router';
 export default new createRouter({
     history: createWebHistory(),
     routes:[
         {
-            name:'InputForm',
             path: '/',
-            component: InputForm
+            component: require('../views/InputForm').default
         },
         {
             path:'/info-table',
-            name:'InfoTable',
-            component: InfoTable
+        
+            component: require('@/views/InfoTable').default
         },
         {
             path:'/404',
-            name: 'ErrorPage',
-            component: ErrorPage
+           
+            component: require('@/views/ErrorPage').default
         },
         {
             path: "/:catchAll(.*)",

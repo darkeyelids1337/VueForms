@@ -1,5 +1,12 @@
 import Vuex from 'vuex'
-import state from './readingsManager/state';
-export default new Vuex.Store({
-  modules: { state }
+import {createStore} from 'vuex'
+import modules from './findModules';
+export default createStore({
+  state: {
+
+  },
+  getters:{},
+  mutations:{},
+  actions:{},
+  modules: modules,
 })

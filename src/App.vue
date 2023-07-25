@@ -1,31 +1,36 @@
 <template ref="mainRef">
   <div>
     <div>
-      <HeaderComponent v-if="activeUser.name">
-        {{ activeUser.name }}
-      </HeaderComponent>
-      <RouterView></RouterView>
-      <FooterComponent v-if="activeUser.name"></FooterComponent>
+      <component :is="layout">
+        <RouterView></RouterView>
+      </component>
     </div>
   </div>
 </template>
 
 <script>
-import HeaderComponent from "@/components/HeaderComponent.vue";
-import FooterComponent from "@/components/FooterComponent.vue";
+import EmptyLayout from '@/layouts/EmptyLayout'
+import UserLayout from '@/layouts/UserLayout'
+import NoLoginLayout from '@/layouts/NoLoginLayout'
 import { RouterView } from "vue-router";
-import { mapState } from "vuex";
 export default {
   name: "App",
   components: {
     RouterView,
-    HeaderComponent,
-    FooterComponent,
+    EmptyLayout
   },
   computed: {
-    ...mapState({
-      activeUser: (state) => state.loginManager.activeUser,
-    }),
+    layout(){
+      if(this.$route.meta.layout === 'user'){
+        return UserLayout;
+      }
+      if(this.$route.meta.layout === 'no-login'){
+        return NoLoginLayout;
+      }
+      else{
+        return EmptyLayout;
+      }
+    }
   },
 };
 </script>

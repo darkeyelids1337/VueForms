@@ -6,6 +6,9 @@
         <div class="side-element" @click="toContact">
             <h4>Контакты</h4>
         </div>
+        <div class="side-element" @click="toNews">
+            <h4>Новости</h4>
+        </div>
     </div>
 </template>
 
@@ -23,6 +26,9 @@ export default{
         },
         toContact(){
             this.$router.push('/contacts');
+        },
+        toNews(){
+            this.$router.push('/news');
         }
     }
 }

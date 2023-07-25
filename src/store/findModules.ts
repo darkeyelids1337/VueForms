@@ -1,7 +1,7 @@
 const requireModel = require.context(
   ".",
   true,
-  /^(?!.*(actions|mutations|getters|index|findModules)).*\.ts$/
+  /^(?!.*(actions|mutations|getters|index|findModules|interfaces)).*\.ts$/
 );
 const modules: any = {};
 requireModel.keys().forEach((item) => {

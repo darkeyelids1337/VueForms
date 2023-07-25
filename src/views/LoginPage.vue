@@ -24,7 +24,7 @@
         </button>
       </div>
       <div>
-        <button @click.prevent="noAuth">Войти без авторизации</button>
+        <button @click.prevent="noAuth">Передать показания без авторизации</button>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@
 
 <script>
 import ModalComponent from "@/components/ModalComponent.vue";
-import { mapGetters, mapMutations } from "vuex";
+import {mapMutations, mapState } from "vuex";
 export default {
   name: "LoginComponent",
   components: {
@@ -50,9 +50,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      getLoginUsers: "loginManager/getLoginUsers",
-    }),
+    ...mapState({
+      loginUsers: state => state.loginManager.users
+    })
   },
   methods: {
     ...mapMutations({
@@ -62,9 +62,8 @@ export default {
       this.$router.push("/no-login");
     },
     onLogin() {
-      console.log(this.password.length);
-      const data = this.getLoginUsers;
-      console.log(data);
+      const data = this.loginUsers;
+      console.log(this.loginUsers);
       const newArr = data.filter((item) => {
         if (
           item["login"] === this.login &&
@@ -92,7 +91,8 @@ export default {
 .login-wrapper {
   width: 500px;
   height: 300px;
-  margin: 0 auto;
+  margin:  0 auto;
+  margin-top: 15%;
   background-color: #f4f7f6;
   padding: 10px;
   box-shadow: 0px 5px 10px 10px rgba(34, 60, 80, 0.2) inset;

@@ -19,6 +19,10 @@ export default new createRouter({
       component: require('@/views/LoginInfoTable').default
     },
     {
+      path:'/contacts',
+      component: require('@/views/ContactPage').default
+    },
+    {
       path: "/404",
 
       component: require("@/views/ErrorPage").default,

@@ -1,27 +1,27 @@
 <template>
   <div>
-    <h1>After Login: {{ name }}</h1>
+    <h1>Главная</h1>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
+import { mapState } from "vuex";
 export default {
   name: "LoginInfoTable",
+  components:{
+  },
   data() {
     return {
       name: "",
     };
   },
   computed: {
-    ...mapGetters({
-      getActiveUser: "loginManager/getActiveUser",
-    }),
+    ...mapState({
+        activeUser: state => state.loginManager.activeUser,
+    })
   },
   created() {
-    const { name } = this.getActiveUser;
-    this.name = name;
+    this.name = this.activeUser.name;
   },
 };
 </script>

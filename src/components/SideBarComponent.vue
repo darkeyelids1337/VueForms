@@ -41,7 +41,9 @@ export default{
     flex-direction: column;
     align-items: center;
     gap: 25px;
-    
+    /* position: absolute; */
+    height: 100%;
+    padding: 15px;
 }
 h4{
     margin: 0;

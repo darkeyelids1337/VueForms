@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="{}">
     <h1>Главная</h1>
   </div>
 </template>

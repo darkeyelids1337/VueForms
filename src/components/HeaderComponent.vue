@@ -66,11 +66,15 @@ export default {
 <style scoped>
 .header-wrapper {
   display: flex;
-  height: 100%;
+  /* height: 100%; */
+  top: 0;
+  margin-bottom: 2%;
   width: 100%;
-  margin-bottom: 60px;
-  background-color: #a7b6c580;
+  /* margin-bottom: 60px; */
+  background-color: #a7b6c5;
   justify-content: space-around;
+  /* position: fixed; */
+  opacity: 0.9;
 }
 .logo-wrapper {
   padding-top: 15px;

@@ -23,22 +23,11 @@
     </div>
     <PaginationComponent
       :pages="data.length"
-      :visiblePosts="visiblePosts"
       @setCurrentPage="setCurrentPage"
+      @setVisiblePosts="setVisiblePosts"
       :style="{ marginTop: '10px' }"
     ></PaginationComponent>
     <p>Текущая страница: {{ currentPage }}</p>
-    <div>
-      <label>
-        Отображение по
-        <input
-          type="number"
-          :value="visiblePosts"
-          @input="setVisiblePosts($event.target.value)"
-        />
-        постов
-      </label>
-    </div>
   </div>
 </template>
 
@@ -53,7 +42,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      visiblePosts: 10,
+      visiblePosts: 5,
     };
   },
   computed: {
@@ -70,11 +59,11 @@ export default {
       this.$router.push(`/news/${+id + 1}`);
     },
     setVisiblePosts(value) {
-      console.log(value);
-      if (value > this.data.length) {
+      if (this.currentPage !== 1) {
         this.currentPage = 1;
+        this.visiblePosts = value;
       }
-      if (value !== "") {
+      else{
         this.visiblePosts = value;
       }
     },

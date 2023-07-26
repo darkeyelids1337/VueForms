@@ -1,11 +1,5 @@
 <template>
   <div class="container">
-    <!-- <ul class="news-wrapper">
-      <li v-for="(item, index) in data.slice((currentPage - 1)* visiblePosts,  visiblePosts*currentPage)" :key="index" :id="index" class="new-element" @click="goTo($event)">
-        <h3 :id="index">{{ item.title }}</h3>
-        <p :id="index">{{ item.body }}</p>
-      </li>
-    </ul> -->
     <div class="news-wrapper">
       <div
         v-for="(item, index) in data.slice(

@@ -37,6 +37,11 @@ export default new createRouter({
       meta:{layout:'user'},
     },
     {
+      path:'/documents',
+      component: require('@/views/Documents/DocumentsPage').default,
+      meta:{layout:'user'}
+    },
+    {
       path: "/404",
 
       component: require("@/views/ErrorPage").default,

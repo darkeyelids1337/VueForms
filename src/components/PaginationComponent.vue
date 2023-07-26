@@ -1,6 +1,12 @@
 <template>
   <div>
     <div class="pages-wrapper">
+      <span v-if="+currentPage + 2 >= Math.ceil(pages / visiblePosts) && Math.ceil(pages / visiblePosts) > 3" @click="setCurrentPage(1)">
+        <button >
+        1
+      </button>
+      <b>...</b>
+      </span>
       <button
         v-for="(item, index) in visibleButtons"
         :key="index"
@@ -33,10 +39,11 @@
       <button
         :style="{ marginRight: '5px' }"
         @click.prevent="setCurrentPage(--currentPage)"
+        :disabled="+currentPage === 1"
       >
         Предыдущая страница
       </button>
-      <button @click.prevent="setCurrentPage(++currentPage)">
+      <button @click.prevent="setCurrentPage(++currentPage)" :disabled="+currentPage === Math.ceil(pages/visiblePosts)"> 
         Следующая страница
       </button>
     </div>

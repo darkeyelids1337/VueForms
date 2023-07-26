@@ -1,5 +1,5 @@
 <template>
-  <div :class="layout">
+  <div>
     <div class="header-wrapper">
       <div class="logo-wrapper" @click="toMain">
         <img src="@/assets/logo.png" width="50" height="50" />

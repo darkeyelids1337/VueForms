@@ -9,6 +9,9 @@
         <div class="side-element" @click="toNews">
             <h4>Новости</h4>
         </div>
+        <div class="side-element" @click="toDocuments">
+            <h4>Документы</h4>
+        </div>
     </div>
 </template>
 
@@ -29,6 +32,9 @@ export default{
         },
         toNews(){
             this.$router.push('/news');
+        },
+        toDocuments(){
+            this.$router.push('/documents')
         }
     }
 }

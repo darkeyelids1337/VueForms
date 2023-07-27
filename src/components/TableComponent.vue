@@ -1,12 +1,5 @@
 <template>
   <table class="table-class" id="myTable">
-    <!-- <th
-        v-for="(item, index) in getTitles"
-        :key="index"
-        @click="sortTable(index)"
-      >
-        {{ item.toUpperCase() }}
-      </th> -->
     <TableHeader :headers="getTitles"></TableHeader>
     <TableRows
       :formatters="formatters"
@@ -17,18 +10,6 @@
         )
       "
     ></TableRows>
-    <!-- <tr
-      v-show="pagination"
-      v-for="(item, index) in getRows.slice(
-        (currentPage - 1) * visiblePosts,
-        visiblePosts * currentPage
-      )"
-      :key="index"
-    >
-      <td v-for="(el, index) in item" :key="index">
-        {{ getKeyByValue(item, el) === formatters[0].id ? formatters[0].formatter(el) : el }}
-      </td>
-    </tr> -->
     <tr v-show="!pagination" v-for="(item, index) in getRows" :key="index">
       <td v-for="el in item" :key="el">
         {{ el }}

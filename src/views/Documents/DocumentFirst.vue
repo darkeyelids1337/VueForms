@@ -47,6 +47,9 @@ export default {
         {
           id: "country",
           label: "country",
+          formatter: (value) => {
+            return 'The ' + value;
+          },
         },
         {
           id: "number",

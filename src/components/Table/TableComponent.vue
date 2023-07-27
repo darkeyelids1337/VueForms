@@ -2,7 +2,7 @@
   <table class="table-class" id="myTable">
     <TableHeader :headers="getTitles"></TableHeader>
     <TableRows
-      :formatters="formatters"
+      :columns="columns"
       :data="
         getRows.slice(
           (currentPage - 1) * visiblePosts,
@@ -180,11 +180,6 @@ export default {
       currentPage: 1,
       visiblePosts: 5,
       formatters: this.columns.filter((item) => item.formatter),
-      // rows: this.data.filter((item) => {
-      //   for(let el in item){
-      //     return el;
-      //   }
-      // })
     };
   },
 };

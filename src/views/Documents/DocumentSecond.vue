@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <TableComponent :data="data"></TableComponent>
+    <TableComponent :data="data" :columns="columns" pagination=""></TableComponent>
   </div>
 </template>
 
 <script>
-import TableComponent from "@/components/TableComponent.vue";
+import TableComponent from "@/components/Table/TableComponent.vue";
 import { mapState } from "vuex";
 export default {
   name: "DocumentSecond",
@@ -35,6 +35,30 @@ export default {
     return {
       currentPage: 1,
       visiblePosts: 5,
+      columns: [
+        {
+          id: "company",
+          label:'company',
+        },
+        {
+          id: "contact",
+          label:'contact',
+        },
+        {
+          id: "country",
+          label: "country",
+          formatter: (value) => {
+            return 'The ' + value;
+          },
+        },
+        {
+          id: "number",
+          label: "number",
+          formatter: (value) => {
+            return '#' + value;
+          }
+        },
+      ],
     };
   },
 };

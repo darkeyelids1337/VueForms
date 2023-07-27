@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import TableComponent from "@/components/TableComponent.vue";
+import TableComponent from "@/components/Table/TableComponent.vue";
 import { mapState } from "vuex";
 export default {
   name: "DocumentFirst",
@@ -54,7 +54,6 @@ export default {
         {
           id: "number",
           label: "number",
-
           formatter: (value) => {
             return '#' + value;
           }

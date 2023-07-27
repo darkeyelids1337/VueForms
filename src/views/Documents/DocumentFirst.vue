@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <TableComponent :data="data" pagination></TableComponent>
+    <TableComponent :data="data" pagination :columns="columns"></TableComponent>
   </div>
 </template>
 
@@ -35,6 +35,28 @@ export default {
     return {
       currentPage: 1,
       visiblePosts: 5,
+      columns: [
+        {
+          id: "company",
+          label:'company',
+        },
+        {
+          id: "contact",
+          label:'contact',
+        },
+        {
+          id: "country",
+          label: "country",
+        },
+        {
+          id: "number",
+          label: "number",
+
+          formatter: (value) => {
+            return '#' + value;
+          }
+        },
+      ],
     };
   },
 };

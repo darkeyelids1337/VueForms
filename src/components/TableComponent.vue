@@ -1,27 +1,35 @@
 <template>
   <table class="table-class" id="myTable">
-    <tr>
-      <th
-        v-for="(item, index) in Object.keys(data[0])"
+    <!-- <th
+        v-for="(item, index) in getTitles"
         :key="index"
         @click="sortTable(index)"
       >
         {{ item.toUpperCase() }}
-      </th>
-    </tr>
-    <tr
+      </th> -->
+    <TableHeader :headers="getTitles"></TableHeader>
+    <TableRows
+      :formatters="formatters"
+      :data="
+        getRows.slice(
+          (currentPage - 1) * visiblePosts,
+          visiblePosts * currentPage
+        )
+      "
+    ></TableRows>
+    <!-- <tr
       v-show="pagination"
-      v-for="(item, index) in data.slice(
+      v-for="(item, index) in getRows.slice(
         (currentPage - 1) * visiblePosts,
         visiblePosts * currentPage
       )"
       :key="index"
     >
-      <td v-for="el in item" :key="el">
-        {{ el }}
+      <td v-for="(el, index) in item" :key="index">
+        {{ getKeyByValue(item, el) === formatters[0].id ? formatters[0].formatter(el) : el }}
       </td>
-    </tr>
-    <tr v-show="!pagination" v-for="(item, index) in data" :key="index">
+    </tr> -->
+    <tr v-show="!pagination" v-for="(item, index) in getRows" :key="index">
       <td v-for="el in item" :key="el">
         {{ el }}
       </td>
@@ -38,6 +46,8 @@
 
 <script>
 import PaginationComponent from "@/components/PaginationComponent.vue";
+import TableHeader from "./TableHeader.vue";
+import TableRows from "./TableRows.vue";
 import { mapState } from "vuex";
 export default {
   name: "TableComponent",
@@ -48,31 +58,71 @@ export default {
     data: {
       type: Array,
     },
+    columns: {
+      type: Array,
+    },
   },
   components: {
     PaginationComponent,
+    TableHeader,
+    TableRows,
   },
   computed: {
     ...mapState({
       data: (state) => state.documentsManager.data,
     }),
+    getTitles() {
+      const newArr = {};
+      for (let el of this.columns) {
+        newArr[el.id] = el.id;
+      }
+      const rows = [];
+      this.data.map((item) => {
+        for (let el in item) {
+          //el is key
+          const newObj = {};
+          if (el in newArr) {
+            for (let i in newArr) {
+              newObj[i] = item[el];
+            }
+
+            rows.push(newObj);
+          }
+        }
+      });
+      return newArr;
+    },
+    getRows() {
+      const newArr = {};
+      for (let el of this.columns) {
+        newArr[el.id] = el.id;
+        if (el.formatter) {
+          newArr[el.id] = el.formatter;
+        }
+      }
+      console.log(newArr);
+      const rows = [];
+      let newObj = {};
+      this.data.map((item) => {
+        for (let el in item) {
+          //el is key
+          if (el in newArr) {
+            newObj[el] = item[el];
+            if (Object.keys(newObj).length === Object.keys(newArr).length) {
+              rows.push(newObj);
+              newObj = {};
+            }
+          }
+        }
+      });
+      return rows;
+    },
   },
   methods: {
+    getKeyByValue(object, value) {
+      return Object.keys(object).find((key) => object[key] === value);
+    },
     setCurrentPage(value) {
-      // console.log(this.data);
-      // data.slice(
-      //   (currentPage - 1) * visiblePosts,
-      //   visiblePosts * currentPage
-      // )
-      // const dataArr = this.data
-      //   .slice(
-      //     (this.currentPage - 1) * this.visiblePosts,
-      //     this.visiblePosts * this.currentPage
-      //   )
-
-      // console.log(dataArr);
-      // // dataArr.forEach((item) => console.log(item))
-      // this.data.forEach((item) => Object.keys(item));
       this.currentPage = value;
     },
     setVisiblePosts(value) {
@@ -148,6 +198,12 @@ export default {
     return {
       currentPage: 1,
       visiblePosts: 5,
+      formatters: this.columns.filter((item) => item.formatter),
+      // rows: this.data.filter((item) => {
+      //   for(let el in item){
+      //     return el;
+      //   }
+      // })
     };
   },
 };
@@ -163,17 +219,5 @@ export default {
 .table-class {
   border-collapse: collapse;
   width: 100%;
-}
-th {
-  width: 2%;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: center;
-  background-color: #04aa6d;
-  color: white;
-}
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
 }
 </style>

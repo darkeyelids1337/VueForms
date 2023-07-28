@@ -1,9 +1,6 @@
 <template>
-  <!-- <td v-for="(el, index) in item" :key="index">
-    {{ toFormat(item, el) ? formatFunction[getKeyByValue(item, el)](el) : el }}
-  </td> -->
   <tr>
-    <TableCell v-for="(el, index) in item" :key="index" :item="el" :column="columns.find((element) => element.id === index )">
+    <TableCell v-for="(el, index) in item" :key="el" :item="el" :column="columns.find((element) => element.id === index )">
     </TableCell>
   </tr>
 </template>

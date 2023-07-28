@@ -2,19 +2,16 @@
   <table class="table-class" id="myTable">
     <TableHeader :headers="getTitles"></TableHeader>
     <TableRows
+      v-if="pagination"
       :columns="columns"
       :data="
-        getRows.slice(
+        data.slice(
           (currentPage - 1) * visiblePosts,
           visiblePosts * currentPage
         )
       "
     ></TableRows>
-    <tr v-show="!pagination" v-for="(item, index) in getRows" :key="index">
-      <td v-for="el in item" :key="el">
-        {{ el }}
-      </td>
-    </tr>
+    <TableRows v-else :data='data' :columns="columns"></TableRows>
   </table>
   <PaginationComponent
     v-if="pagination"

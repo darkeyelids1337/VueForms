@@ -38,25 +38,26 @@ export default {
       columns: [
         {
           id: "company",
-          label:'company',
+          label: "company",
         },
         {
           id: "contact",
-          label:'contact',
+          label: "contact",
         },
         {
           id: "country",
           label: "country",
-          formatter: (value) => {
-            return 'The ' + value;
+          formatter: (value, ref) => {
+            ref?.querySelector('button')?.addEventListener('click', () => console.log(value))
+            return `${value} <button>click</button>`;
           },
         },
         {
           id: "number",
           label: "number",
           formatter: (value) => {
-            return '#' + value;
-          }
+            return "#" + value;
+          },
         },
       ],
     };
